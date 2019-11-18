@@ -29,29 +29,36 @@
         },
         mounted() {
             //创建bscroll对象
-            this.scroll=new BScroll(this.$refs.wrapper, {
-                probeType:this.probeType,
+            this.scroll = new BScroll(this.$refs.wrapper, {
+                probeType: this.probeType,
                 click: true,
                 pullUpLoad: this.pullUpLoad
-            }),
+            })
             //监听滚动位置
-            this.scroll.on('scroll',(position)=>{
-                this.$emit('scroll',position)
-            }),
+            if (this.probeType === 2 || this.probeType === 3) {
+            this.scroll.on('scroll', (position) => {
+                this.$emit('scroll', position)
+            })
+        }
             //上拉加载更多
+            if(this.pullUpLoad){
             this.scroll.on('pullingUp',()=>{
                 this.$emit('pullingUp')
             })
+        }
         },
         methods:{
+            //回顶
             scrollTo(x,y,time=300){
-                this.scroll.scrollTo(x,y,time)
+                this.scroll && this.scroll.scrollTo(x,y,time)
             },
+            //初始化下拉更大
             finishPullUp(){
-                this.scroll.finishPullUp()
+                this.scroll  &&  this.scroll.finishPullUp()
             },
+            //重新计算高
             refresh(){
-                this.scroll.refresh()
+                this.scroll &&   this.scroll.refresh()
             }
         }
     }
